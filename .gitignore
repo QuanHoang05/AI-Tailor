@@ -1,0 +1,39 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Environments & IDEs
+.venv/
+venv/
+ENV/
+env/
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Large Pretrained Weights & Checkpoints (> 50MB, avoids GitHub 100MB limit)
+pretrained_models/
+*.pth
+*.pth.tar
+*.ckpt
+*.bin
+
+# 3D Human Models (SMPL-X files > 100MB)
+*.npz
+*.pkl
+common/utils/human_model_files/smplx/*.npz
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Output & Temp evaluation artifacts
+output/
+output_measurements.json
+*.log
+.ipynb_checkpoints/
