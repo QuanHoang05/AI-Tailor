@@ -79,9 +79,8 @@ $PIP_CMD install -q \
     joblib \
     numba
 
-echo "=== [3/5] Đang cài đặt MMCV-Full 1.7.1 và MMDetection 2.26.0 ==="
+echo "=== [3/5] Đang cài đặt MMCV-Full 1.7.1 ==="
 $PIP_CMD install -q https://github.com/camenduru/wheels/releases/download/colab/mmcv_full-1.7.1-cp310-cp310-linux_x86_64.whl
-$PIP_CMD install -q mmdet==2.26.0
 
 # Tạo symlink tự động cho libcudart.so.12 nếu thiếu trong đường dẫn hệ thống của Colab
 CUDART_FILE=$(find /usr/local -name "libcudart.so.12*" 2>/dev/null | head -n 1)
