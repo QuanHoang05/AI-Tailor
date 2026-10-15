@@ -85,6 +85,8 @@ def parse_args():
                         help="Tên model checkpoint (mặc định: smpler_x_s32)")
     parser.add_argument('--device', type=str, default='cuda:0' if torch.cuda.is_available() else 'cpu',
                         help="Thiết bị tính toán (cuda:0 hoặc cpu)")
+    parser.add_argument('--save_mesh', type=str, default=None,
+                        help="Đường dẫn lưu file 3D avatar (.obj hoặc .ply) để import vào CLO3D/Blender")
     args = parser.parse_args()
     if not args.gender or str(args.gender).strip().lower() in ['', '""', "''", 'none', 'null']:
         args.gender = 'neutral'
@@ -210,7 +212,7 @@ def get_landmark_3d(triangles_np, landmark_dict, name):
     return (tri_verts * bc).sum(axis=0)
 
 
-def compute_measurements(betas, height_cm_input=None, weight_kg_input=None, gender='neutral', device='cuda:0'):
+def compute_measurements(betas, height_cm_input=None, weight_kg_input=None, gender='neutral', device='cuda:0', save_mesh_path=None):
     """Tạo lưới SMPL-X T-pose, tối ưu hóa betas và trích xuất toàn bộ số đo may mặc ISO 8559."""
     from utils.human_models import smpl_x
     from body_measurements import BodyMeasurements
@@ -328,6 +330,17 @@ def compute_measurements(betas, height_cm_input=None, weight_kg_input=None, gend
 
     final_mass_kg = weight_kg_input if has_weight else (est_mass_kg * (scale_factor ** 3))
 
+    if save_mesh_path:
+        try:
+            import trimesh
+            scaled_verts = (vertices[0] * scale_factor).detach().cpu().numpy()
+            mesh_faces = smpl_x.face.astype(np.int64)
+            mesh_obj = trimesh.Trimesh(vertices=scaled_verts, faces=mesh_faces, process=False)
+            mesh_obj.export(save_mesh_path)
+            print(f"[✓] Đã xuất thành công mô hình 3D avatar (Mannequin 3D) vào: {save_mesh_path}")
+        except Exception as e:
+            print(f"[!] Không thể xuất file 3D mesh: {e}")
+
     return {
         "thong_tin_nhap": {
             "gioi_tinh": active_gender,
@@ -378,7 +391,8 @@ def main():
         height_cm_input=args.height_cm,
         weight_kg_input=args.weight_kg,
         gender=args.gender,
-        device=args.device
+        device=args.device,
+        save_mesh_path=args.save_mesh
     )
 
     sd = results["so_do_may_mac_cm"]

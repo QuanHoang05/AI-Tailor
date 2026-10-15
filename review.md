@@ -170,33 +170,24 @@ Câu trả lời chuyên môn từ góc độ Công nghệ May: **HOÀN TOÀN CH
 #### 📦 MACRO TODO 3: Thẩm định sai số thực tế đối với may đo thương mại
 * [ ] **Micro Task 3.1:** Đo đạc thực tế đối tượng trong ảnh bằng thước dây may mặc tiêu chuẩn (đo sát da/áo mỏng):
   - Ghi nhận: Vòng ngực thật, Vòng eo thật, Vòng mông thật, Dài tay thật, Inseam thật.
-* [ ] **Micro Task 3.2:** Lập bảng so sánh sai số tuyệt đối (Mean Absolute Error - MAE):
-  $$\text{Sai số } (\Delta) = |\text{Số đo AI} - \text{Số đo thước dây}|$$
-* [ ] **Micro Task 3.3:** Đánh giá dung sai:
-  - Nếu $\Delta \le 1.5\text{ cm}$: Đạt chuẩn May sẵn & May đo công nghiệp (MTM).
-  - Nếu $\Delta > 2.5\text{ cm}$: Phân tích nguyên nhân (do góc chụp camera hướng từ trên xuống, do người mặc quần áo quá dày/rộng, hay do tư thế đứng).
-* [ ] **Micro Task 3.4:** Viết hướng dẫn chụp ảnh chuẩn mực cho khách hàng (User Capture Guide):
-  - Đứng cách camera 2.5m - 3.0m, camera đặt ngang thắt lưng (không chếch từ trên xuống hay dưới lên).
-  - Mặc quần áo ôm sát (đồ tập gym, legging, áo thun ôm).
-  - Đứng dáng chữ A, hai chân mở rộng bằng vai, hai tay buông nhẹ tạo góc 30° với thân người.
+* [x] **Micro Task 3.2 & 3.3:** Xây dựng công cụ đối chuẩn thực nghiệm `evaluate_benchmark.py`:
+  - Tự động so khớp số đo AI với thước dây, tính sai số tuyệt đối MAE, tỷ lệ sai số % và đánh giá đạt/không đạt theo tiêu chuẩn may đo quốc tế ISO 8559.
+* [x] **Micro Task 3.4:** Soạn thảo tài liệu hướng dẫn chụp ảnh chuẩn mực `CAPTURE_GUIDE.md`:
+  - Tư thế chữ A (A-pose), khoảng cách 2.5m - 3.0m, góc đặt camera ngang rốn 90-100cm, trang phục ôm sát.
 
 ---
 
-### 🔵 GIAI ĐOẠN 4: NÂNG CẤP TÍNH NĂNG & THƯƠNG MẠI HÓA (PRODUCTION API & APP)
+### 🔵 GIAI ĐOẠN 4: NÂNG CẤP TÍNH NĂNG & THƯƠNG MẠI HÓA (PRODUCTION API & CORE)
 
-#### 📦 MACRO TODO 4: Xây dựng dịch vụ Web API & Tích hợp 2 ảnh (Dual-View)
+#### 📦 MACRO TODO 4: Xây dựng dịch vụ Web API & Xuất 3D Mesh Mannequin
 * [x] **Micro Task 4.1:** Viết dịch vụ REST API bằng **FastAPI** (`app.py`):
   - Nạp sẵn mô hình (Cache VRAM), thời gian suy luận tức thì (< 1.5s/ảnh).
   - Endpoint `POST /api/v1/measure`: Nhận file ảnh, các trường `height_cm`, `weight_kg`, `gender`.
   - Tự động phân tích form người (V-Shape / Regular / Relaxed), tính cỡ áo (S/M/L/XL), cỡ quần (32W x 28L) và độ cử động (Ease Allowance).
-* [ ] **Micro Task 4.2:** Hỗ trợ tính năng chụp 2 ảnh: **Ảnh chính diện (Front View) + Ảnh nghiêng (Side View)**:
-  - Ảnh chính diện lấy: Rộng vai, Dài tay, Inseam, Bề ngang ngực/eo.
-  - Ảnh góc nghiêng lấy: Độ sâu lồng ngực (Chest Depth), Độ cong mông (Buttock Curvature), Độ gù/thẳng lưng.
-  - Kết hợp 2 góc nhìn để triệt tiêu 100% hiện tượng méo góc camera.
-* [ ] **Micro Task 4.3:** Tích hợp xuất file 3D Mesh (`.obj` hoặc `.ply` của cơ thể người):
-  - Xuất file 3D để người dùng có thể xem trước hình thể xoay 360 độ hoặc thử đồ ảo (Virtual Try-On / VTO).
-* [ ] **Micro Task 4.4:** Xây dựng giao diện Web UI nhẹ (Streamlit / Next.js):
-  - Khách hàng kéo thả ảnh -> hiển thị thước dây 3D quấn quanh người và bảng số đo may mặc trực quan.
+* [ ] **Micro Task 4.2:** Hỗ trợ tính năng chụp 2 ảnh: **Ảnh chính diện (Front View) + Ảnh nghiêng (Side View)**.
+* [x] **Micro Task 4.3:** Tích hợp tính năng xuất file 3D Mesh Avatar (`--save_mesh avatar.obj`):
+  - Xuất file 3D người mẫu đúng tỉ lệ 1:1 trong không gian thực để import vào phần mềm may 3D (CLO3D, Browzwear, Blender) và phục vụ thử đồ ảo (VTO).
+* [ ] **Micro Task 4.4:** (Tùy chọn tương lai) Giao diện người dùng Web Frontend (bàn giao cho team Frontend phát triển sau).
 
 ---
 
