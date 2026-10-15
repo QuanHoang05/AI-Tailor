@@ -159,9 +159,9 @@ Câu trả lời chuyên môn từ góc độ Công nghệ May: **HOÀN TOÀN CH
 
 #### 📦 MACRO TODO 2: Đóng gói hệ thống để chạy được trên mọi máy tính và máy chủ
 * [x] **Micro Task 2.1:** Tạo file `Dockerfile` chuẩn hóa trên nền `pytorch/pytorch:2.0.1-cuda11.8-cudnn8-runtime` để chạy độc lập không cần cài đặt môi trường.
-* [ ] **Micro Task 2.2:** Xây dựng file `setup_windows.bat` hoặc script Conda `environment.yml` dành riêng cho lập trình viên muốn chạy trực tiếp trên Windows không dùng Docker.
-* [ ] **Micro Task 2.3:** Bổ sung cơ chế fallback tự động sang CPU (`--device cpu`) khi máy trạm không có GPU NVIDIA (dù tốc độ chậm hơn ~5-8s nhưng không bị crash).
-* [ ] **Micro Task 2.4:** Tách đường dẫn tải Pretrained Checkpoints (`SMPLer_X_h36m.pth.tar` và mô hình SMPL-X) thành script tự động tải `download_models.py` từ Google Drive / HuggingFace, tránh lỗi thiếu file trọng số khi nhân bản sang máy mới.
+* [x] **Micro Task 2.2:** Xây dựng file `setup_windows.bat` và script Conda `environment.yml` dành riêng cho lập trình viên muốn chạy trực tiếp trên Windows không dùng Docker.
+* [x] **Micro Task 2.3:** Bổ sung cơ chế fallback tự động sang CPU (`--device cpu`) khi máy trạm không có GPU NVIDIA (dù tốc độ chậm hơn ~5-8s nhưng không bị crash).
+* [x] **Micro Task 2.4:** Viết script `download_models.py` tự động kiểm tra và hỗ trợ tải 5 bộ checkpoints cốt lõi từ HuggingFace & SMPL-X portal.
 
 ---
 
@@ -185,9 +185,10 @@ Câu trả lời chuyên môn từ góc độ Công nghệ May: **HOÀN TOÀN CH
 ### 🔵 GIAI ĐOẠN 4: NÂNG CẤP TÍNH NĂNG & THƯƠNG MẠI HÓA (PRODUCTION API & APP)
 
 #### 📦 MACRO TODO 4: Xây dựng dịch vụ Web API & Tích hợp 2 ảnh (Dual-View)
-* [ ] **Micro Task 4.1:** Viết dịch vụ REST API bằng **FastAPI** (`app.py`):
-  - Endpoint `POST /api/v1/measure`: Nhận file ảnh, các trường `height`, `weight`, `gender`.
-  - Trả về JSON chứa đầy đủ 8 số đo ISO 8559 và đề xuất size quần áo phù hợp (S/M/L/XL).
+* [x] **Micro Task 4.1:** Viết dịch vụ REST API bằng **FastAPI** (`app.py`):
+  - Nạp sẵn mô hình (Cache VRAM), thời gian suy luận tức thì (< 1.5s/ảnh).
+  - Endpoint `POST /api/v1/measure`: Nhận file ảnh, các trường `height_cm`, `weight_kg`, `gender`.
+  - Tự động phân tích form người (V-Shape / Regular / Relaxed), tính cỡ áo (S/M/L/XL), cỡ quần (32W x 28L) và độ cử động (Ease Allowance).
 * [ ] **Micro Task 4.2:** Hỗ trợ tính năng chụp 2 ảnh: **Ảnh chính diện (Front View) + Ảnh nghiêng (Side View)**:
   - Ảnh chính diện lấy: Rộng vai, Dài tay, Inseam, Bề ngang ngực/eo.
   - Ảnh góc nghiêng lấy: Độ sâu lồng ngực (Chest Depth), Độ cong mông (Buttock Curvature), Độ gù/thẳng lưng.

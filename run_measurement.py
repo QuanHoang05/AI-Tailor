@@ -132,12 +132,18 @@ def load_smpler_x_model(pretrained_model_name, device):
     return demoer
 
 
-def detect_person(detector, img_path):
-    """Lấy tọa độ khung hình chữ nhật [x, y, w, h] của người trong ảnh."""
+def detect_person(detector, img_input):
+    """Lấy tọa độ khung hình chữ nhật [x, y, w, h] của người trong ảnh (hỗ trợ đường dẫn file hoặc mảng numpy)."""
     import cv2
-    img = cv2.imread(img_path)
+    if isinstance(img_input, str):
+        img = cv2.imread(img_input)
+    elif isinstance(img_input, np.ndarray):
+        img = img_input
+    else:
+        raise ValueError(f"Đầu vào ảnh không hợp lệ: {type(img_input)}")
+
     if img is None:
-        raise ValueError(f"Không thể đọc file ảnh: {img_path}")
+        raise ValueError(f"Không thể đọc file ảnh: {img_input}")
     h, w = img.shape[:2]
 
     det_type = detector[0] if isinstance(detector, tuple) else 'autocrop'
